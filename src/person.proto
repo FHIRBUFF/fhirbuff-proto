@@ -1,0 +1,151 @@
+/*
+{
+  "resourceType" : "Person",
+  // from Resource: id, meta, implicitRules, and language
+  // from DomainResource: text, contained, extension, and modifierExtension
+  "identifier" : [{ Identifier }], // A human identifier for this person
+  "name" : [{ HumanName }], // A name associated with the person
+  "telecom" : [{ ContactPoint }], // A contact detail for the person
+  "gender" : "<code>", // male | female | other | unknown
+  "birthDate" : "<date>", // The date on which the person was born
+  "address" : [{ Address }], // One or more addresses for the person
+  "photo" : { Attachment }, // Image of the person
+  "managingOrganization" : { Reference(Organization) }, // The organization that is the custodian of the person record
+  "active" : <boolean>, // This person's record is in active use
+  "link" : [{ // Link to a resource that concerns the same actual person
+    "target" : { Reference(Patient|Practitioner|RelatedPerson|Person) }, // R!  The resource to which this actual person is associated
+    "assurance" : "<code>" // level1 | level2 | level3 | level4
+  }]
+}
+code = Indicates that the value is taken from a set of controlled strings defined elsewhere (see Using codes for further discussion). Technically, a code is restricted to a string which has at least one character and no leading or trailing whitespace, and where there is no whitespace other than single spaces in the contents
+regex: [^\s]+([\s]+[^\s]+)*
+{
+  "resourceType" : "Identifier",
+  "use" : "<code>", // usual | official | temp | secondary (If known)
+  "type" : { CodeableConcept }, // Description of identifier
+  "system" : "<uri>", // The namespace for the identifier
+  "value" : "<string>", // The value that is unique
+  "period" : { Period }, // Time period when id is/was valid for use
+  "assigner" : { Reference(Organization) } // Organization that issued id (may be just text)
+}
+*/
+/// Issues.
+// protobuf regex.  how to implement. needed for code and uri types.
+
+//Base Types Needed.
+//ContactPoint
+//Link
+
+package fhirbuffs;
+
+syntax = "proto3";
+
+message Coding {
+    required string system = 1; //<uri> string that uses regex.  
+    required string version = 2; //<string>
+    required string code = 3; //<code> string that uses regex.  
+    required string display = 4; //<string>
+    required bool userSelected = 5; //<boolean>
+}
+
+message CodeableConcept {
+    repeated Coding coding = 1; //[{ Coding }]
+    required string text = 2; //<string>
+}
+
+message Period {
+    required date start = 1; //<dateTime>
+    required date end = 2; //<dateTime>
+}
+
+message Address {
+    required uses use = 1; //<code>
+    required types type = 2; //<code>
+    required string text = 3; //<string> Text representation of the address
+    repeated string line = 4; // ["<string>"] Street name, number, direction & P.O. Box etc.
+    required string city = 5; //<string> Name of city, town etc.
+    required string district = 6; //<string> District name (aka county)
+    required string state = 7; //<string> Sub-unit of country (abbreviations ok)
+    required string postalCode = 8; //<string> Postal code for area
+    required string country = 9; //<string> Country (can be ISO 3166 3 letter code)
+    required Period period = 10; //<Period> Time period when address was/is in use
+    
+    enum uses {
+		home = 0;
+		work = 1;
+		temp = 2;
+		old = 3;
+    }
+    enum types {
+		postal = 0;
+		physical = 1;
+		both = 2;
+    }
+}
+
+message HumanName {
+    required uses use = 1; //"<code>", // usual | official | temp | nickname | anonymous | old | maiden
+    required string text = 2; //"<string>"  Text representation of the full name
+    repeated string family = 3; //["<string>"] Family name (often called 'Surname')
+    repeated string given = 3; //["<string>"] Given names (not always 'first'). Includes middle names
+    repeated string prefix = 4; //["<string>"] Parts that come before the name
+    repeated string suffix = 5; //["<string>"] Parts that come after the name
+    required Period period = 6; //{ Period } Time period when name was/is in use
+    
+    enum uses {
+		usual = 0;
+		official = 1;
+		temp = 2;
+		nickname = 3;
+		anonymous = 4;
+		old = 5;
+		maiden = 6;
+    }
+}
+
+message Contact {
+    required CodeableConcept purpose = 1; //{ CodeableConcept }  The type of contact
+    required HumanName name = 2; //{ HumanName } A name associated with the contact
+    repeated ContactPoint telecom = 3; //[{ ContactPoint }] Contact details (telephone, email, etc.)  for a contact
+    required Address address = 4; //{ Address } Visiting or postal addresses for the contact
+}
+    
+message Organization {
+    repeated Identifier identifier = 1; //[{ Identifier }]
+    required bool active = 2; //<boolean>
+    required CodeableConcept type = 3; //{ CodeableConcept }
+    required string name = 4; //<string>
+    repeated ContactPoint telecom = 5; //[{ ContactPoint }]
+    repeated Address address = 6; //[{ Address }]
+    optional string "partOf" = 7; //: { Reference(Organization) } The organization of which this organization forms a part
+    repeated Contact contact  = 8; //: [{  Contact for the organization for a certain purpose
+}
+
+message Identifier {
+	required string use = 1; //this is a code that uses regex.  
+	repeated CodeableConcept type = 2;
+	required string system = 3; //this is a code that uses regex.  
+	required string value = 4;
+	required Period period = 5;
+	repeated Organization assigner = 6;
+}
+
+message Person {
+	repeated Identifier identifier = 1;
+	repeated HumanName name = 2;
+	repeated ContactPoint telecom = 3;
+	required genders gender = 4;
+	required date birthDate = 5;
+	repeated Address address =6;
+	repeated Attachment photo = 7;
+	optional Organization managingOrganization = 8;
+	required bool active = 9;
+	optional Link link = 10;
+
+	enum genders {
+		male = 0;
+		female = 1;
+		other = 2;
+		unknown = 3;
+	}
+}
