@@ -37,4 +37,5 @@ protobuf_impl.variable_out = SOURCES
 QMAKE_EXTRA_COMPILERS += protobuf_impl
 
 SOURCES += \
-    ../src/person.proto
+    ../src/person.proto \
+
