@@ -1,11 +1,16 @@
 // Copyright (c) 2015 FHIR-Buff Developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
-
+/// compile C++ code with this:
 /// protoc -I=. --cpp_out=. ./primitives.proto
 
-syntax = "proto2";
+/// Issues.
+//  protobuf regex.  how to implement. needed for code and uri types.
+
+syntax = "proto2"; //v3 doesn't allow required!
+
 package fhirbuffs;
+
 message Coding {
     required string system = 1; //<uri> string that uses regex.  
     required string version = 2; //<string>
