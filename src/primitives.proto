@@ -194,6 +194,11 @@ message Ratio {
 	Quantity denominator = 2; //{ Quantity } Denominator value
 }
 
+message Range {
+	Quantity low = 1; //{ Quantity(SimpleQuantity) }, // C? Low limit
+	Quantity high = 2; //{ Quantity(SimpleQuantity) } // C? High limit
+}
+
 message Instance {
 	Identifier identifier = 1; //{ Identifier } Identifier of the package/container
 	Date expiry = 2; //<dateTime> When no longer valid to use

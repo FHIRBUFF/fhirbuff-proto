@@ -1,0 +1,94 @@
+// Copyright (c) 2015 FHIR-Buff Developers
+// Distributed under the MIT software license, see the accompanying
+// file COPYING or http://www.opensource.org/licenses/mit-license.php.
+
+syntax = "proto3";
+
+package fhirbuffs;
+
+import "primitives.proto";
+import "group.proto";
+
+message Actor {
+"entity" : { Reference(Contract|Device|Group|Location|Organization|Patient|
+    Practitioner|RelatedPerson|Substance) }, // R!  Contract Actor Type
+    "role" : [{ CodeableConcept }] // Contract  Actor Role
+}
+
+message ValuedItem {
+    // entity[x]: Contract Valued Item Type. One of these 2:
+    "entityCodeableConcept" : { CodeableConcept },
+    "entityReference" : { Reference(Any) },
+    "identifier" : { Identifier }, // Contract Valued Item Identifier
+    "effectiveTime" : "<dateTime>", // Contract Valued Item Effective Tiem
+    "quantity" : { Quantity(SimpleQuantity) }, // Count of Contract Valued Items
+    "unitPrice" : { Quantity(Money) }, // Contract Valued Item fee, charge, or cost
+    "factor" : <decimal>, // Contract Valued Item Price Scaling Factor
+    "points" : <decimal>, // Contract Valued Item Difficulty Scaling Factor
+    "net" : { Quantity(Money) } // Total Contract Valued Item Value
+}
+
+message Signer {
+    "type" : { Coding }, // R!  Contract Signer Type
+    "party" : { Reference(Organization|Patient|Practitioner|RelatedPerson) }, // R!  Contract Signatory Party
+    "signature" : "<string>" // R!  Contract Documentation Signature
+}
+
+message Term {
+    "term" : [{ // Contract Term List
+    "identifier" : { Identifier }, // Contract Term identifier
+    "issued" : "<dateTime>", // Contract Term Issue Date Time
+    "applies" : { Period }, // Contract Term Effective Time
+    "type" : { CodeableConcept }, // Contract Term Type
+    "subType" : { CodeableConcept }, // Contract Term Subtype
+    "subject" : { Reference(Any) }, // Subject of this Contract Term
+    "action" : [{ CodeableConcept }], // Contract Term Action
+    "actionReason" : [{ CodeableConcept }], // Contract Term Action Reason
+    "actor" : [{ // Contract Term Actor List
+      "entity" : { Reference(Contract|Device|Group|Location|Organization|
+     Patient|Practitioner|RelatedPerson|Substance) }, // R!  Contract Term Actor
+      "role" : [{ CodeableConcept }] // Contract Term Actor Role
+}
+
+message Friendly {
+    "friendly" : [{ // Contract Friendly Language
+    // content[x]: Easily comprehended representation of this Contract. One of these 2:
+    "contentAttachment" : { Attachment }
+    "contentReference" : { Reference(Composition|DocumentReference|
+    QuestionnaireResponse) }
+}
+
+message Legal {
+    "legal" : 
+    // content[x]: Contract Legal Text. One of these 2:
+    "contentAttachment" : { Attachment }
+    "contentReference" : { Reference(Composition|DocumentReference|
+    QuestionnaireResponse) }
+}
+message ContractRule {
+    "rule" : [{ // Computable Contract Language
+    // content[x]: Computable Contract Rules. One of these 2:
+    "contentAttachment" : { Attachment }
+    "contentReference" : { Reference(DocumentReference) }
+  }]
+}
+message Contract {
+	Identifier identifier = 1; //{ Identifier }, // Contract identifier
+	Date issued = 2; //"<dateTime>", // When this Contract was issued
+	Period applies = 3; //{ Period }, // Effective time
+	string subject = 4; //[{ Reference(Any) }], // Subject of this Contract
+	repeated string authority = 5; //[{ Reference(Organization) }], // Authority under which this Contract has standing
+	repeated string domain = 6; //[{ Reference(Location) }], // Domain in which this Contract applies
+	CodeableConcept type = 7; //{ CodeableConcept }, // Contract Tyoe
+	repeated CodeableConcept subType = 8; //[{ CodeableConcept }], // Contract Subtype
+	repeated CodeableConcept action = 9; //[{ CodeableConcept }], // Contract Action
+	repeated CodeableConcept actionReason = 10; //[{ CodeableConcept }], // Contract Action Reason
+	repeated Actor actor = 11; //[{ // Contract Actor
+	repeated ValuedItem valuedItem = 12; //[{ // Contract Valued Item
+	repeated Signer signer = 12; //[{ // Contract Signer
+	repeated Term term = 13; //[{ // Contract Term List
+	string text = 14; //<string> Human readable Contract term text
+	repeated ValuedItem valuedItem = 15; //[{ // Contract Term Valued Item
+	repeated Group group = 16; //[{ Content as for Contract.term }] // Nested Contract Term Group
+	Attachment bindingAttachment = 17; // { Attachment }
+}
