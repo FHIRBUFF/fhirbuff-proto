@@ -1,0 +1,31 @@
+// Copyright (c) 2015 FHIR-Buff Developers
+// Distributed under the MIT software license, see the accompanying
+// file COPYING or http://www.opensource.org/licenses/mit-license.php.
+
+/// compile C++ code with this:
+/// protoc -I=. --cpp_out=bin/. ./location.proto
+
+syntax = "proto3";
+
+package fhirbuffs;
+
+import "primitives.proto";
+
+message Location {
+	repeated Identifier identifier = 1; //[{ Identifier }] Unique code or number identifying the location to its users
+	string status = 2; //<code> active | suspended | inactive
+	string name = 3; //<string> Name of the location as used by humans
+	string description = 4; //<string>", // Description of the location
+	LocationMode mode = 5; //<code> instance | kind
+	CodeableConcept type = 6; //{ CodeableConcept } Type of function performed
+	repeated ContactPoint telecom = 7; //[{ ContactPoint }] Contact details of the location
+	Address address = 8; //{ Address } Physical location
+	CodeableConcept physicalType = 9; //{ CodeableConcept } Physical form of the location
+	Position position = 10; //The absolute geographic location
+	Organization managingOrganization = 11; //{ Reference(Organization) } Organization responsible for provisioning and upkeep
+	Location partOf = 12; //{ Reference(Location) } Another Location this one is physically part of
+	enum LocationMode {
+		instance = 0;
+		kind = 1;
+    }
+}

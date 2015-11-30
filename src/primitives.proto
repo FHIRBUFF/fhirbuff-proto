@@ -3,7 +3,7 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 /// compile C++ code with this:
-/// protoc -I=. --cpp_out=. ./primitives.proto
+/// protoc -I=. --cpp_out=bin/. ./primitives.proto
 
 /// Issues.
 //  needs regex.  how to implement in protobuff. needed for code, uri, oid, id... types.
@@ -21,6 +21,12 @@ message Decimal {
   uint64 low = 1; // the first 64 bits of the underlying value
   uint32 high = 2; // the last 32 bis of the underlying value
   sint32 signScale = 3; // the number of decimal digits, and the sign
+}
+
+message Position {
+	Decimal longitude = 1; //<decimal> Longitude with WGS84 datum
+	Decimal latitude = 2; //<decimal> Latitude with WGS84 datum
+	Decimal altitude = 3; //<decimal> Altitude with WGS84 datum
 }
 
 message Coding {
@@ -167,14 +173,14 @@ message Link {
 message Quantity {
 	Decimal value = 1; // <decimal> Numerical value (with implicit precision)
 	string comparator = 2; //<code> < | <= | >= | > - how to understand the value
-    string unit = 3; //<string> Unit representation
-    string system = 4; // <uri>" System that defines coded unit form
-    string code = 5; // <code> Coded form of the unit 
+	string unit = 3; //<string> Unit representation
+	string system = 4; // <uri>" System that defines coded unit form
+	string code = 5; // <code> Coded form of the unit 
 }
 
 message Ratio {
-  Quantity numerator = 1; //{ Quantity } Numerator value
-  Quantity denominator = 2; //{ Quantity } Denominator value
+	Quantity numerator = 1; //{ Quantity } Numerator value
+	Quantity denominator = 2; //{ Quantity } Denominator value
 }
 
 message Instance {
