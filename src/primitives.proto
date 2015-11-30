@@ -17,10 +17,21 @@ syntax = "proto3";
 
 package fhirbuffs;
 
+message Date {
+  fixed32 value = 1; // date value
+}
+
 message Decimal {
   uint64 low = 1; // the first 64 bits of the underlying value
   uint32 high = 2; // the last 32 bis of the underlying value
   sint32 signScale = 3; // the number of decimal digits, and the sign
+}
+
+enum Gender {
+	male = 0;
+	female = 1;
+	other = 2;
+	unknown = 3;
 }
 
 message Position {
@@ -43,8 +54,8 @@ message CodeableConcept {
 }
 
 message Period {
-    fixed32 start = 1; //<dateTime> using UNIX time
-    fixed32 end = 2; //<dateTime> using UNIX time
+    Date start = 1; //<dateTime> using UNIX time
+    Date end = 2; //<dateTime> using UNIX time
 }
 
 message Address {
@@ -95,7 +106,7 @@ message HumanName {
 message ContactPoint {
     AuthorReferences authorReference = 1; //{ Reference(Practitioner|Patient|RelatedPerson) },
     string authorString = 2; //<string>
-    fixed32 time = 3; //<dateTime> When the annotation was made
+    Date time = 3; //<dateTime> When the annotation was made
     string text = 4; //<string> R!  The annotation  - text content
     enum AuthorReferences {
 		Practitioner = 0;
@@ -148,7 +159,7 @@ message Attachment {
     uint32 size = 5; //<unsignedInt> Number of bytes of content (if url provided)
     bytes hash = 6; //<base64Binary> Hash of the data (sha-1, base64ed)
     string title = 7; //<string> Label to display in place of the data
-    fixed32 creation = 8; //<dateTime> Date attachment was first created
+    Date creation = 8; //<dateTime> Date attachment was first created
 }
 
 message Link {
@@ -185,7 +196,42 @@ message Ratio {
 
 message Instance {
 	Identifier identifier = 1; //{ Identifier } Identifier of the package/container
-	fixed32 expiry = 2; //<dateTime> When no longer valid to use
+	Date expiry = 2; //<dateTime> When no longer valid to use
 	Quantity quantity = 3; //{ Quantity(SimpleQuantity) } Amount of substance in the package
 }
 
+message ServiceType {
+	CodeableConcept type = 1; // { CodeableConcept }, // R!  Type of service delivered or performed
+	CodeableConcept specialty = 2; // [{ CodeableConcept }] // Specialties handled by the Service Site
+}
+
+enum Days {
+	sunday = 0;
+	monday = 1;
+	tueday = 2;
+	wednesday = 3;
+	thursday = 4;
+	friday = 5;
+	satday = 6;
+}
+
+message AvailableTime {
+	Days daysOfWeek = 1; //["<code>"], // mon | tue | wed | thu | fri | sat | sun
+	bool allDay = 2; // <boolean>, // Always available? e.g. 24 hour service
+	uint32 availableStartTime = 3; //"<time>", // Opening time of day (ignored if allDay = true)
+	uint32 availableEndTime = 4; //"<time>" // Closing time of day (ignored if allDay = true)
+}
+
+message NotAvailableTime {
+	Days daysOfWeek = 1; //["<code>"], // mon | tue | wed | thu | fri | sat | sun
+	bool allDay = 2; // <boolean>, // Always available? e.g. 24 hour service
+	uint32 availableStartTime = 3; //"<time>", // Opening time of day (ignored if allDay = true)
+	uint32 availableEndTime = 4; //"<time>" // Closing time of day (ignored if allDay = true)
+}
+
+message Qualifications {
+	repeated Identifier identifier = 1; //[{ Identifier }], // An identifier for this qualification for the practitioner
+	CodeableConcept code = 2; //{ CodeableConcept }, // R!  Coded representation of the qualification
+	Period period = 3; //{ Period }, // Period during which the qualification is valid
+	Organization issuer = 4; //{ Reference(Organization) } // Organization that regulates and issues the qualification
+}

@@ -1,0 +1,37 @@
+// Copyright (c) 2015 FHIR-Buff Developers
+// Distributed under the MIT software license, see the accompanying
+// file COPYING or http://www.opensource.org/licenses/mit-license.php.
+
+/// compile C++ code with this:
+/// protoc -I=. --cpp_out=. ./practitioner.proto
+
+syntax = "proto3";
+
+package fhirbuffs;
+
+import "primitives.proto";
+import "location.proto";
+import "healthcareservice.proto";
+
+message PractitionerRole {
+	Organization managingOrganization = 1; //{ Reference(Organization) }, // Organization where the roles are performed
+	CodeableConcept role = 2; //{ CodeableConcept }, // Roles which this practitioner may perform
+	repeated CodeableConcept specialty = 3; //[{ CodeableConcept }], // Specific specialty of the practitioner
+	Period period = 4; //{ Period }, // The period during which the practitioner is authorized to perform in these role(s)
+	repeated Location location = 5; // [{ Reference(Location) }], // The location(s) at which this practitioner provides care
+    HealthcareService healthcareService = 6; // [{ Reference(HealthcareService) }] // The list of healthcare services that this worker provides for this role's Organization/Location(s)
+}
+
+message Practitioner {
+	repeated Identifier identifier = 1; //[{ Identifier }] A identifier for the person as this agent
+	bool active = 2; //<boolean> Whether this practitioner's record is in active use
+	HumanName name = 3; //{ HumanName } A name associated with the person
+	repeated ContactPoint telecom = 4; //[{ ContactPoint }] A contact detail for the practitioner
+	repeated Address address = 5; //[{ Address }] Where practitioner can be found/visited
+	Gender gender = 6; //"<code>", // male | female | other | unknown
+	Date birthDate = 7; //<date> The date  on which the practitioner was born
+	repeated Attachment photo = 8; //[{ Attachment }], // Image of the person
+	repeated PractitionerRole practitionerRole = 9; //[{ Roles/organizations the practitioner is associated with
+	repeated Qualifications qualification = 10; //[{ // Qualifications obtained by training and certification
+	repeated CodeableConcept communication = 11; //[{ CodeableConcept }] // A language the practitioner is able to use in patient communication 
+}
