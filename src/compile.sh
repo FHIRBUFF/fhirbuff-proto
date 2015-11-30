@@ -33,3 +33,11 @@ protoc -I=. --java_out=bin/. ./person.proto
 protoc -I=. --java_out=bin/. ./substance.proto
 protoc -I=. --java_out=bin/. ./practitioner.proto
 protoc -I=. --java_out=bin/. ./healthcareservice.proto
+
+#Compile for Python
+protoc -I=. --python_out=bin/. ./primitives.proto
+protoc -I=. --python_out=bin/. ./location.proto
+protoc -I=. --python_out=bin/. ./person.proto
+protoc -I=. --python_out=bin/. ./substance.proto
+protoc -I=. --python_out=bin/. ./practitioner.proto
+protoc -I=. --python_out=bin/. ./healthcareservice.proto
