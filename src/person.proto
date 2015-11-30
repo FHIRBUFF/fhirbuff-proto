@@ -3,7 +3,7 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 /// compile C++ code with this:
-/// protoc -I=. --cpp_out=. ./primitives.proto
+/// protoc -I=. --cpp_out=. ./person.proto
 
 syntax = "proto3";
 

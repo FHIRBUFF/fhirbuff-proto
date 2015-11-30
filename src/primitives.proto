@@ -17,6 +17,12 @@ syntax = "proto3";
 
 package fhirbuffs;
 
+message Decimal {
+  uint64 low = 1; // the first 64 bits of the underlying value
+  uint32 high = 2; // the last 32 bis of the underlying value
+  sint32 signScale = 3; // the number of decimal digits, and the sign
+}
+
 message Coding {
     string system = 1; //<uri> string that uses regex.  
     string version = 2; //<string>
@@ -141,7 +147,7 @@ message Attachment {
 
 message Link {
     LinkTarget target = 1; //Reference(Patient|Practitioner|RelatedPerson|Person) }, R!  The resource to which this actual person is associated
-    LinkAssurance assurance = 2;
+    LinkAssurance assurance = 2; //<code> level1 | level2 | level3 | level4
     
     enum LinkTarget {
 		Patient = 0;
@@ -157,3 +163,23 @@ message Link {
 		level4 = 4;
     }
 }
+
+message Quantity {
+	Decimal value = 1; // <decimal> Numerical value (with implicit precision)
+	string comparator = 2; //<code> < | <= | >= | > - how to understand the value
+    string unit = 3; //<string> Unit representation
+    string system = 4; // <uri>" System that defines coded unit form
+    string code = 5; // <code> Coded form of the unit 
+}
+
+message Ratio {
+  Quantity numerator = 1; //{ Quantity } Numerator value
+  Quantity denominator = 2; //{ Quantity } Denominator value
+}
+
+message Instance {
+	Identifier identifier = 1; //{ Identifier } Identifier of the package/container
+	fixed32 expiry = 2; //<dateTime> When no longer valid to use
+	Quantity quantity = 3; //{ Quantity(SimpleQuantity) } Amount of substance in the package
+}
+

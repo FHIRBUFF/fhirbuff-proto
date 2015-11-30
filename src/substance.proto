@@ -1,0 +1,26 @@
+// Copyright (c) 2015 FHIR-Buff Developers
+// Distributed under the MIT software license, see the accompanying
+// file COPYING or http://www.opensource.org/licenses/mit-license.php.
+
+/// compile C++ code with this:
+/// protoc -I=. --cpp_out=bin/. ./substance.proto
+
+syntax = "proto3";
+
+package fhirbuffs;
+
+import "primitives.proto";
+
+message Ingredient {
+	Ratio quantity  = 1; //{ Ratio }, // Optional amount (concentration)
+	Substance substance = 2; //{ Reference(Substance) } A component of the substance
+}
+
+message Substance {
+	repeated Identifier identifier = 1; //[{ Identifier }] Unique identifier
+	CodeableConcept category = 2; //{ CodeableConcept } What substance this is TODO multiple categories????
+	CodeableConcept code = 3; //{ CodeableConcept }  What substance this is
+	string description = 4; //<string> Textual description of the substance, comments
+	repeated Instance instance = 5; //[{ If this describes a specific package/container of the substance
+	repeated Ingredient ingredient = 6; //[{ Composition information about the substance
+}
