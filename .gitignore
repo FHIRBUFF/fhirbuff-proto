@@ -1,7 +1,7 @@
 *.tar.gz
 
 *.exe
-src/bin
+src/bin/
 
 # autoreconf
 Makefile.in
