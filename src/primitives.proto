@@ -6,7 +6,6 @@
 /// protoc -I=. --cpp_out=. ./primitives.proto
 
 /// Issues.
-//  How to import types.
 //  needs regex.  how to implement in protobuff. needed for code, uri, oid, id... types.
 //  code = restricted to a string which has at least one character and no leading or trailing whitespace, and where there is no whitespace other than single spaces in the contents
 //     regex: [^\s]+([\s]+[^\s]+)*
@@ -32,8 +31,8 @@ message CodeableConcept {
 }
 
 message Period {
-    int32 start = 1; //<dateTime> using UNIX time
-    int32 end = 2; //<dateTime> using UNIX time
+    fixed32 start = 1; //<dateTime> using UNIX time
+    fixed32 end = 2; //<dateTime> using UNIX time
 }
 
 message Address {
@@ -84,7 +83,7 @@ message HumanName {
 message ContactPoint {
     AuthorReferences authorReference = 1; //{ Reference(Practitioner|Patient|RelatedPerson) },
     string authorString = 2; //<string>
-    int32 time = 3; //<dateTime> When the annotation was made
+    fixed32 time = 3; //<dateTime> When the annotation was made
     string text = 4; //<string> R!  The annotation  - text content
     enum AuthorReferences {
 		Practitioner = 0;
@@ -129,3 +128,32 @@ message Organization {
     repeated Contact contact  = 8; //: [{  Contact for the organization for a certain purpose
 }
 
+message Attachment {
+    string contentType = 1; //<code> Mime type of the content, with charset etc. 
+    string language = 2; //<code> Human language of the content (BCP-47) 
+    bytes data = 3; //<base64Binary> Data inline, base64ed
+    string url = 4; //<uri> Uri where the data can be found
+    uint32 size = 5; //<unsignedInt> Number of bytes of content (if url provided)
+    bytes hash = 6; //<base64Binary> Hash of the data (sha-1, base64ed)
+    string title = 7; //<string> Label to display in place of the data
+    fixed32 creation = 8; //<dateTime> Date attachment was first created
+}
+
+message Link {
+    LinkTarget target = 1; //Reference(Patient|Practitioner|RelatedPerson|Person) }, R!  The resource to which this actual person is associated
+    LinkAssurance assurance = 2;
+    
+    enum LinkTarget {
+		Patient = 0;
+		Practitioner = 1;
+		RelatedPerson = 2;
+		Person = 3;
+    }
+    enum LinkAssurance {
+		unknown = 0;
+		level1 = 1;
+		level2 = 2;
+		level3 = 3;
+		level4 = 4;
+    }
+}
