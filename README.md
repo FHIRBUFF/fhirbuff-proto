@@ -1,13 +1,23 @@
 # FHIR Buff Project Development Tree
 
-## Fast Healthcare Interoperability Resources (FHIR) specifications https://www.hl7.org/fhir/
+Copyright (c) 2015 FHIR-Buff Developers
 
-## Protobuf: https://developers.google.com/protocol-buffers/
+#### Fast Healthcare Interoperability Resources (FHIR) specifications https://www.hl7.org/fhir/
 
-## Purpose
+#### Google Protobuf specifications: https://developers.google.com/protocol-buffers/
 
-## Specifications
+#### Purpose
 
-## Compile instructions
+#### Specifications
+
+#### Compile instructions
+
+* Linux: 
+$ cd src
+$ ./compile.sh
+
+the resulting code is saved in src/bin
+
+
 
 
