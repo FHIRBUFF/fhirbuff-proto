@@ -1,45 +1,52 @@
 // Copyright (c) 2015 FHIR-Buff Developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
+
 /// compile C++ code with this:
 /// protoc -I=. --cpp_out=. ./primitives.proto
 
 /// Issues.
-//  protobuf regex.  how to implement. needed for code and uri types.
+//  How to import types.
+//  needs regex.  how to implement in protobuff. needed for code, uri, oid, id... types.
+//  code = restricted to a string which has at least one character and no leading or trailing whitespace, and where there is no whitespace other than single spaces in the contents
+//     regex: [^\s]+([\s]+[^\s]+)*
+//  uri = A Uniform Resource Identifier Reference (RFC 3986 ). Note: URIs are case sensitive. For UUID (urn:uuid:53fefa32-fcbb-4ff8-8a92-55ee120877b7) use all lowercase
+//  oid = regex: urn:oid:[0-2](\.[1-9]\d*)+
+//  id = regex: [A-Za-z0-9\-\.]{1,64}
 
-syntax = "proto2"; //v3 doesn't allow required!
+syntax = "proto3";
 
 package fhirbuffs;
 
 message Coding {
-    required string system = 1; //<uri> string that uses regex.  
-    required string version = 2; //<string>
-    required string code = 3; //<code> string that uses regex.  
-    required string display = 4; //<string>
-    required bool userSelected = 5; //<boolean>
+    string system = 1; //<uri> string that uses regex.  
+    string version = 2; //<string>
+    string code = 3; //<code> string that uses regex.  
+    string display = 4; //<string>
+    bool userSelected = 5; //<boolean>
 }
 
 message CodeableConcept {
     repeated Coding coding = 1; //[{ Coding }]
-    required string text = 2; //<string>
+    string text = 2; //<string>
 }
 
 message Period {
-    required int64 start = 1; //<dateTime> using UNIX time
-    required int64 end = 2; //<dateTime> using UNIX time
+    int32 start = 1; //<dateTime> using UNIX time
+    int32 end = 2; //<dateTime> using UNIX time
 }
 
 message Address {
-    required AddressUses use = 1; //<code>
-    required AddressTypes type = 2; //<code>
-    required string text = 3; //<string> Text representation of the address
+    AddressUses use = 1; //<code>
+    AddressTypes type = 2; //<code>
+    string text = 3; //<string> Text representation of the address
     repeated string line = 4; // ["<string>"] Street name, number, direction & P.O. Box etc.
-    required string city = 5; //<string> Name of city, town etc.
-    required string district = 6; //<string> District name (aka county)
-    required string state = 7; //<string> Sub-unit of country (abbreviations ok)
-    required string postalCode = 8; //<string> Postal code for area
-    required string country = 9; //<string> Country (can be ISO 3166 3 letter code)
-    required Period period = 10; //<Period> Time period when address was/is in use
+    string city = 5; //<string> Name of city, town etc.
+    string district = 6; //<string> District name (aka county)
+    string state = 7; //<string> Sub-unit of country (abbreviations ok)
+    string postalCode = 8; //<string> Postal code for area
+    string country = 9; //<string> Country (can be ISO 3166 3 letter code)
+    Period period = 10; //<Period> Time period when address was/is in use
     
     enum AddressUses {
 		home = 0;
@@ -55,13 +62,13 @@ message Address {
 }
 
 message HumanName {
-    required HumanNameUses use = 1; //"<code>", // usual | official | temp | nickname | anonymous | old | maiden
-    required string text = 2; //"<string>"  Text representation of the full name
+    HumanNameUses use = 1; //"<code>", // usual | official | temp | nickname | anonymous | old | maiden
+    string text = 2; //"<string>"  Text representation of the full name
     repeated string family = 3; //["<string>"] Family name (often called 'Surname')
     repeated string given = 4; //["<string>"] Given names (not always 'first'). Includes middle names
     repeated string prefix = 5; //["<string>"] Parts that come before the name
     repeated string suffix = 6; //["<string>"] Parts that come after the name
-    required Period period = 7; //{ Period } Time period when name was/is in use
+    Period period = 7; //{ Period } Time period when name was/is in use
     
     enum HumanNameUses {
 		usual = 0;
@@ -75,10 +82,10 @@ message HumanName {
 }
 
 message ContactPoint {
-    optional AuthorReferences authorReference = 1; //{ Reference(Practitioner|Patient|RelatedPerson) },
-    required string authorString = 2; //<string>
-    optional int64 time = 3; //<dateTime> When the annotation was made
-    required string text = 4; //<string> R!  The annotation  - text content
+    AuthorReferences authorReference = 1; //{ Reference(Practitioner|Patient|RelatedPerson) },
+    string authorString = 2; //<string>
+    int32 time = 3; //<dateTime> When the annotation was made
+    string text = 4; //<string> R!  The annotation  - text content
     enum AuthorReferences {
 		Practitioner = 0;
 		Patient = 1;
@@ -88,18 +95,18 @@ message ContactPoint {
 }
 
 message Contact {
-    required CodeableConcept purpose = 1; //{ CodeableConcept }  The type of contact
-    required HumanName name = 2; //{ HumanName } A name associated with the contact
+    CodeableConcept purpose = 1; //{ CodeableConcept }  The type of contact
+    HumanName name = 2; //{ HumanName } A name associated with the contact
     repeated ContactPoint telecom = 3; //[{ ContactPoint }] Contact details (telephone, email, etc.)  for a contact
-    required Address address = 4; //{ Address } Visiting or postal addresses for the contact
+    Address address = 4; //{ Address } Visiting or postal addresses for the contact
 }
 
 message Identifier {
-	required IdentifierUses use = 1; //<code> usual | official | temp | secondary (If known)
+	IdentifierUses use = 1; //<code> usual | official | temp | secondary (If known)
 	repeated CodeableConcept type = 2;// { CodeableConcept } Description of identifier
-	required string system = 3; //<uri> The namespace for the identifier
-	required string value = 4; //<string> The value that is unique
-	required Period period = 5; //{ Period } Time period when id is/was valid for use
+	string system = 3; //<uri> The namespace for the identifier
+	string value = 4; //<string> The value that is unique
+	Period period = 5; //{ Period } Time period when id is/was valid for use
 	repeated Organization assigner = 6; //{ Reference(Organization) }  Organization that issued id (may be just text
 	enum IdentifierUses {
 		Usual = 0;
@@ -113,12 +120,12 @@ message Identifier {
 
 message Organization {
     repeated Identifier identifier = 1; //[{ Identifier }]
-    required bool active = 2; //<boolean>
-    required CodeableConcept type = 3; //{ CodeableConcept }
-    required string name = 4; //<string>
+    bool active = 2; //<boolean>
+    CodeableConcept type = 3; //{ CodeableConcept }
+    string name = 4; //<string>
     repeated ContactPoint telecom = 5; //[{ ContactPoint }]
     repeated Address address = 6; //[{ Address }]
-    optional Organization partOf = 7; //: { Reference(Organization) } The organization of which this organization forms a part
+    Organization partOf = 7; //: { Reference(Organization) } The organization of which this organization forms a part
     repeated Contact contact  = 8; //: [{  Contact for the organization for a certain purpose
 }
 
