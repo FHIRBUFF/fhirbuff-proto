@@ -1,22 +1,28 @@
-/// Issues.
-// protobuf regex.  how to implement. needed for code and uri types.
+// Copyright (c) 2015 FHIR-Buff Developers
+// Distributed under the MIT software license, see the accompanying
+// file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-syntax = "proto2";
+/// compile C++ code with this:
+/// protoc -I=. --cpp_out=. ./primitives.proto
+
+syntax = "proto3";
 package fhirbuffs;
+
+import "primitives.proto";
 
 message Person {
 	repeated Identifier identifier = 1;
 	repeated HumanName name = 2;
 	repeated ContactPoint telecom = 3;
-	required genders gender = 4;
-	required date birthDate = 5;
+	PersonGender gender = 4;
+	int32 birthDate = 5;
 	repeated Address address =6;
-	repeated Attachment photo = 7;
-	optional Organization managingOrganization = 8;
-	required bool active = 9;
-	optional Link link = 10;
+	//repeated Attachment photo = 7;
+	Organization managingOrganization = 8;
+	bool active = 9;
+	//Link link = 10;
 
-	enum genders {
+	enum PersonGender {
 		male = 0;
 		female = 1;
 		other = 2;
