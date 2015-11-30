@@ -1,12 +1,7 @@
 *.tar.gz
 
 *.exe
-src/bitcredit
-src/bitcreditd
-src/bitcredit-cli
-src/bitcredit-tx
-src/test/test_bitcredit
-src/qt/test/test_bitcredit-qt
+src/bin
 
 # autoreconf
 Makefile.in
@@ -28,20 +23,6 @@ build-aux/test-driver
 config.log
 config.status
 configure
-libtool
-src/config/bitcredit-config.h
-src/config/bitcredit-config.h.in
-src/config/stamp-h1
-share/setup.nsi
-share/qt/Info.plist
-
-src/univalue/gen
-
-src/qt/*.moc
-src/qt/moc_*.cpp
-src/qt/forms/ui_*.h
-
-src/qt/test/moc*.cpp
 
 .deps
 .dirstamp
@@ -55,32 +36,24 @@ src/qt/test/moc*.cpp
 *.o
 *.o-*
 *.patch
-.bitcredit
 *.a
 *.pb.cc
 *.pb.h
-
+*.fhir
+*.pbobjc.m
+*.pbobjc.h
 *.log
 *.trs
 *.dmg
-
+*.key
 *.json.h
 *.raw.h
+*.java
 
 #libtool object files
 *.lo
 *.la
 
-# Compilation and Qt preprocessor part
-*.qm
-Makefile
-bitcredit-qt
-Bitcredit-Qt.app
-
-# Unit-tests
-Makefile.test
-bitcredit-qt_test
-src/test/buildenv.py
 
 # Resources cpp
 qrc_*.cpp
@@ -88,28 +61,3 @@ qrc_*.cpp
 # Qt creator
 *.pro.user
 
-# Mac specific
-.DS_Store
-build
-
-#lcov
-*.gcno
-/*.info
-test_bitcredit.coverage/
-total.coverage/
-coverage_percent.txt
-
-#build tests
-linux-coverage-build
-linux-build
-win32-build
-qa/pull-tester/run-bitcreditd-for-test.sh
-qa/pull-tester/tests-config.sh
-qa/pull-tester/cache/*
-qa/pull-tester/test.*/*
-
-!src/leveldb*/Makefile
-
-/doc/doxygen/
-
-libbitcreditconsensus.pc
