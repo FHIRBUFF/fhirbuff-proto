@@ -7,6 +7,6 @@
   * oid = regex: urn:oid:[0-2](\.[1-9]\d*)+
   * id = regex: [A-Za-z0-9\-\.]{1,64}
   
-* should reference use message or just an id that points to it??? or https://www.hl7.org/fhir/references.html#Reference
+* should reference use message or just an id that points to it??? or https://www.hl7.org/fhir/references.html#Reference  
   
   
