@@ -18,10 +18,10 @@ install dependencies:
     $ sudo apt-get update
     $ sudo apt-get upgrade
     $ sudo apt-get install build-essential libtool autotools-dev autoconf pkg-config git-core
-    $ git clone -b v3.0.0-beta-1-bzl-fix https://github.com/google/protobuf.git
     
-protobuf is built using autotools:
+build protobuf using autotools:
 
+    $ git clone -b v3.0.0-beta-1-bzl-fix https://github.com/google/protobuf.git
     $ cd protobuf
     $ ./autogen.sh
     $ ./configure
