@@ -2,7 +2,7 @@
 
 Copyright (c) 2015 FHIR-Buff Developers
 
-#### Fast Healthcare Interoperability Resources (FHIR) specifications https://www.hl7.org/fhir/
+#### HSPC Fast Healthcare Interoperability Resources (FHIR) specifications:  https://healthservices.atlassian.net/wiki/pages/viewpage.action?pageId=6717442
 
 #### Google Protobuf specifications: https://developers.google.com/protocol-buffers/
 
@@ -37,7 +37,7 @@ compile FHIR-Buff:
     $ cd fhir-buff/src
     $ ./compile.sh
     
-The resulting Javs, C#, Python, etc.. code is saved in src/bin.  
+The resulting C++, Objective C, C#, Java, and Python code is saved in src/bin.  
 
 
 
