@@ -9,69 +9,67 @@ package fhirbuffs;
 import "primitives.proto";
 import "group.proto";
 
+//change Reference types ????
+
 message Actor {
-"entity" : { Reference(Contract|Device|Group|Location|Organization|Patient|
-    Practitioner|RelatedPerson|Substance) }, // R!  Contract Actor Type
-    "role" : [{ CodeableConcept }] // Contract  Actor Role
+	string entity = 1;//{ Reference(Contract|Device|Group|Location|Organization|Patient|Practitioner|RelatedPerson|Substance) }, // R!  Contract Actor Type
+    repeated CodeableConcept role = 2;//[{ CodeableConcept }] // Contract  Actor Role
 }
 
 message ValuedItem {
-    // entity[x]: Contract Valued Item Type. One of these 2:
-    "entityCodeableConcept" : { CodeableConcept },
-    "entityReference" : { Reference(Any) },
-    "identifier" : { Identifier }, // Contract Valued Item Identifier
-    "effectiveTime" : "<dateTime>", // Contract Valued Item Effective Tiem
-    "quantity" : { Quantity(SimpleQuantity) }, // Count of Contract Valued Items
-    "unitPrice" : { Quantity(Money) }, // Contract Valued Item fee, charge, or cost
-    "factor" : <decimal>, // Contract Valued Item Price Scaling Factor
-    "points" : <decimal>, // Contract Valued Item Difficulty Scaling Factor
-    "net" : { Quantity(Money) } // Total Contract Valued Item Value
+	// entity[x]: Contract Valued Item Type. One of these 2:
+	CodeableConcept entityCodeableConcept = 1; //{ CodeableConcept }
+	Reference entityReference = 2; //{ Reference(Any) }
+	Identifier identifier = 3; //{ Identifier } // Contract Valued Item Identifier
+	DateTime effectiveTime = 4; //<dateTime>, // Contract Valued Item Effective Tiem
+	Quantity quantity = 5; //{ Quantity(SimpleQuantity) }, // Count of Contract Valued Items
+	Quantity unitPrice = 6; //{ Quantity(Money) }, // Contract Valued Item fee, charge, or cost
+	Decimal factor = 7; //<decimal>, // Contract Valued Item Price Scaling Factor
+	Decimal points = 8; //<decimal>, // Contract Valued Item Difficulty Scaling Factor
+	Quantity net = 9; //{ Quantity(Money) } // Total Contract Valued Item Value
 }
 
 message Signer {
-    "type" : { Coding }, // R!  Contract Signer Type
-    "party" : { Reference(Organization|Patient|Practitioner|RelatedPerson) }, // R!  Contract Signatory Party
-    "signature" : "<string>" // R!  Contract Documentation Signature
+	Coding type = 1; //{ Coding }, // R!  Contract Signer Type
+	Reference party = 2; //{ Reference(Organization|Patient|Practitioner|RelatedPerson) }, // R!  Contract Signatory Party
+	string signature = 3; //<string> // R!  Contract Documentation Signature
 }
 
 message Term {
-    "term" : [{ // Contract Term List
-    "identifier" : { Identifier }, // Contract Term identifier
-    "issued" : "<dateTime>", // Contract Term Issue Date Time
-    "applies" : { Period }, // Contract Term Effective Time
-    "type" : { CodeableConcept }, // Contract Term Type
-    "subType" : { CodeableConcept }, // Contract Term Subtype
-    "subject" : { Reference(Any) }, // Subject of this Contract Term
-    "action" : [{ CodeableConcept }], // Contract Term Action
-    "actionReason" : [{ CodeableConcept }], // Contract Term Action Reason
-    "actor" : [{ // Contract Term Actor List
-      "entity" : { Reference(Contract|Device|Group|Location|Organization|
-     Patient|Practitioner|RelatedPerson|Substance) }, // R!  Contract Term Actor
-      "role" : [{ CodeableConcept }] // Contract Term Actor Role
+	repeated string term = 1; //???[{ // Contract Term List
+	Identifier identifier = 2; //{ Identifier }, // Contract Term identifier
+	DateTime issued = 3; //<dateTime>, // Contract Term Issue Date Time
+	Period applies = 4; //{ Period }, // Contract Term Effective Time
+	CodeableConcept type = 5; //{ CodeableConcept }, // Contract Term Type
+	CodeableConcept subType = 6; //{ CodeableConcept }, // Contract Term Subtype
+	Reference subject = 7; //{ Reference(Any) }, // Subject of this Contract Term
+	repeated CodeableConcept action = 8; //[{ CodeableConcept }], // Contract Term Action
+	repeated CodeableConcept actionReason = 9; //[{ CodeableConcept }], // Contract Term Action Reason
+	repeated Actor actor = 10; //[{ // Contract Term Actor List
 }
 
 message Friendly {
-    "friendly" : [{ // Contract Friendly Language
-    // content[x]: Easily comprehended representation of this Contract. One of these 2:
-    "contentAttachment" : { Attachment }
-    "contentReference" : { Reference(Composition|DocumentReference|
-    QuestionnaireResponse) }
+	// content[x]: Easily comprehended representation of this Contract. One of these 2:
+	repeated string friendly = 1; //[{ // Contract Friendly Language 
+    Attachment contentAttachment = 2; //{ Attachment }
+	Reference contentReference = 3; //{ Reference(Composition|DocumentReference|QuestionnaireResponse) }
 }
 
+
 message Legal {
-    "legal" : 
     // content[x]: Contract Legal Text. One of these 2:
-    "contentAttachment" : { Attachment }
-    "contentReference" : { Reference(Composition|DocumentReference|
-    QuestionnaireResponse) }
+    Attachment contentAttachment = 1; //{ Attachment }
+    Reference contentReference = 2; //{ Reference(Composition|DocumentReference|QuestionnaireResponse) }
 }
+
+
 message ContractRule {
-    "rule" : [{ // Computable Contract Language
+    // Computable Contract Language
     // content[x]: Computable Contract Rules. One of these 2:
-    "contentAttachment" : { Attachment }
-    "contentReference" : { Reference(DocumentReference) }
-  }]
+    Attachment contentAttachment = 1; //{ Attachment }
+    Reference contentReference = 2;//{ Reference(DocumentReference) }
 }
+
 message Contract {
 	Identifier identifier = 1; //{ Identifier }, // Contract identifier
 	Date issued = 2; //"<dateTime>", // When this Contract was issued

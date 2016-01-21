@@ -156,17 +156,17 @@ message Link {
     LinkAssurance assurance = 2; //<code> level1 | level2 | level3 | level4
     
     enum LinkTarget {
-	Patient = 0;
-	Practitioner = 1;
-	RelatedPerson = 2;
-	Person = 3;
+		Patient = 0;
+		Practitioner = 1;
+		RelatedPerson = 2;
+		Person = 3;
     }
     enum LinkAssurance {
-	Unknown = 0;
-	Level1 = 1;
-	Level2 = 2;
-	Level3 = 3;
-	Level4 = 4;
+		unknown = 0;
+		level1 = 1;
+		level2 = 2;
+		level3 = 3;
+		level4 = 4;
     }
 }
 
@@ -200,13 +200,13 @@ message ServiceType {
 }
 
 enum Days {
-	Sunday = 0;
-	Monday = 1;
-	Tueday = 2;
-	Wednesday = 3;
-	Thursday = 4;
-	Friday = 5;
-	Saturday = 6;
+	sunday = 0;
+	monday = 1;
+	tueday = 2;
+	wednesday = 3;
+	thursday = 4;
+	friday = 5;
+	satday = 6;
 }
 
 message AvailableTime {
@@ -228,4 +228,8 @@ message Qualifications {
 	CodeableConcept code = 2; //{ CodeableConcept }, // R!  Coded representation of the qualification
 	Period period = 3; //{ Period }, // Period during which the qualification is valid
 	Organization issuer = 4; //{ Reference(Organization) } // Organization that regulates and issues the qualification
+}
+
+message Reference {
+	string reference = 1; //
 }
