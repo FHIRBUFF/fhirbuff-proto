@@ -17,10 +17,10 @@ message Decimal {
 }
 
 enum Gender {
-	male = 0;
-	female = 1;
-	other = 2;
-	unknown = 3;
+	Male = 0;
+	Female = 1;
+	Other = 2;
+	Unknown = 3;
 }
 
 message Position {
@@ -60,15 +60,15 @@ message Address {
     Period period = 10; //<Period> Time period when address was/is in use
     
     enum AddressUses {
-		home = 0;
-		work = 1;
-		temp = 2;
-		old = 3;
+		Home = 0;
+		Work = 1;
+		Temp = 2;
+		Old = 3;
     }
     enum AddressTypes {
-		postal = 0;
-		physical = 1;
-		both = 2;
+		Postal = 0;
+		Physical = 1;
+		Both = 2;
     }
 }
 
@@ -82,13 +82,13 @@ message HumanName {
     Period period = 7; //{ Period } Time period when name was/is in use
     
     enum HumanNameUses {
-		usual = 0;
-		official = 1;
-		temp = 2;
-		nickname = 3;
-		anonymous = 4;
-		old = 5;
-		maiden = 6;
+		Usual = 0;
+		Official = 1;
+		Temp = 2;
+		Nickname = 3;
+		Anonymous = 4;
+		Old = 5;
+		Maiden = 6;
     }
 }
 
@@ -162,11 +162,11 @@ message Link {
 		Person = 3;
     }
     enum LinkAssurance {
-		unknown = 0;
-		level1 = 1;
-		level2 = 2;
-		level3 = 3;
-		level4 = 4;
+		Unknown = 0;
+		Level1 = 1;
+		Level2 = 2;
+		Level3 = 3;
+		Level4 = 4;
     }
 }
 
@@ -200,13 +200,13 @@ message ServiceType {
 }
 
 enum Days {
-	sunday = 0;
-	monday = 1;
-	tueday = 2;
-	wednesday = 3;
-	thursday = 4;
-	friday = 5;
-	satday = 6;
+	Sunday = 0;
+	Monday = 1;
+	Tuesday = 2;
+	Wednesday = 3;
+	Thursday = 4;
+	Friday = 5;
+	Saturday = 6;
 }
 
 message AvailableTime {
