@@ -55,13 +55,11 @@ message Friendly {
 	Reference contentReference = 3; //{ Reference(Composition|DocumentReference|QuestionnaireResponse) }
 }
 
-
 message Legal {
     // content[x]: Contract Legal Text. One of these 2:
     Attachment contentAttachment = 1; //{ Attachment }
     Reference contentReference = 2; //{ Reference(Composition|DocumentReference|QuestionnaireResponse) }
 }
-
 
 message ContractRule {
     // Computable Contract Language

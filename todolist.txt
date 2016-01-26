@@ -8,12 +8,12 @@ Identification.Groups.HealthcareService
 Identification.Groups.Group
 Identification.Individuals.Person
 Identification.Individuals.Practitioner
+Identification.Entities.Contract
 ////////////////////////////////////////////////
 ///Identification
 ////////////////////////////////////////////////
 Identification.Individuals.Patient
 Identification.Individuals.RelatedPerson
-Identification.Entities.Contract
 Identification.Devices.Device
 Identification.Devices.DeviceComponent
 Identification.Devices.DeviceMetric
