@@ -21,7 +21,7 @@ message ValuedItem {
 	CodeableConcept entityCodeableConcept = 1; //{ CodeableConcept }
 	Reference entityReference = 2; //{ Reference(Any) }
 	Identifier identifier = 3; //{ Identifier } // Contract Valued Item Identifier
-	DateTime effectiveTime = 4; //<dateTime>, // Contract Valued Item Effective Tiem
+	Date effectiveTime = 4; //<dateTime>, // Contract Valued Item Effective Tiem
 	Quantity quantity = 5; //{ Quantity(SimpleQuantity) }, // Count of Contract Valued Items
 	Quantity unitPrice = 6; //{ Quantity(Money) }, // Contract Valued Item fee, charge, or cost
 	Decimal factor = 7; //<decimal>, // Contract Valued Item Price Scaling Factor
@@ -38,7 +38,7 @@ message Signer {
 message Term {
 	repeated string term = 1; //???[{ // Contract Term List
 	Identifier identifier = 2; //{ Identifier }, // Contract Term identifier
-	DateTime issued = 3; //<dateTime>, // Contract Term Issue Date Time
+	Date issued = 3; //<dateTime>, // Contract Term Issue Date Time
 	Period applies = 4; //{ Period }, // Contract Term Effective Time
 	CodeableConcept type = 5; //{ CodeableConcept }, // Contract Term Type
 	CodeableConcept subType = 6; //{ CodeableConcept }, // Contract Term Subtype
@@ -83,10 +83,10 @@ message Contract {
 	repeated CodeableConcept actionReason = 10; //[{ CodeableConcept }], // Contract Action Reason
 	repeated Actor actor = 11; //[{ // Contract Actor
 	repeated ValuedItem valuedItem = 12; //[{ // Contract Valued Item
-	repeated Signer signer = 12; //[{ // Contract Signer
-	repeated Term term = 13; //[{ // Contract Term List
-	string text = 14; //<string> Human readable Contract term text
-	repeated ValuedItem valuedItem = 15; //[{ // Contract Term Valued Item
-	repeated Group group = 16; //[{ Content as for Contract.term }] // Nested Contract Term Group
-	Attachment bindingAttachment = 17; // { Attachment }
+	repeated Signer signer = 13; //[{ // Contract Signer
+	repeated Term term = 14; //[{ // Contract Term List
+	string text = 15; //<string> Human readable Contract term text
+	repeated ValuedItem termValuedItem = 16; //[{ // Contract Term Valued Item
+	repeated Group group = 17; //[{ Content as for Contract.term }] // Nested Contract Term Group
+	Attachment bindingAttachment = 18; // { Attachment }
 }
