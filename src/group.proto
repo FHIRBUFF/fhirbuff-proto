@@ -9,12 +9,12 @@ package fhirbuffs;
 import "primitives.proto";
 
 enum GroupType {
-	person = 0;
-	animal = 1;
-	practitioner = 2;
-	device = 3;
-	medication = 4;
-	substance = 5;
+	Person = 0;
+	Animal = 1;
+	Practitioner = 2;
+	Device = 3;
+	Medication = 4;
+	Substance = 5;
 }
 
 enum Entity {
