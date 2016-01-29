@@ -16,7 +16,7 @@ message PractitionerRole {
 	repeated CodeableConcept specialty = 3; //[{ CodeableConcept }], // Specific specialty of the practitioner
 	Period period = 4; //{ Period }, // The period during which the practitioner is authorized to perform in these role(s)
 	repeated Location location = 5; // [{ Reference(Location) }], // The location(s) at which this practitioner provides care
-    HealthcareService healthcareService = 6; // [{ Reference(HealthcareService) }] // The list of healthcare services that this worker provides for this role's Organization/Location(s)
+        repeated HealthcareService healthcareService = 6; // [{ Reference(HealthcareService) }] // The list of healthcare services that this worker provides for this role's Organization/Location(s)
 }
 
 message Practitioner {
