@@ -33,8 +33,8 @@ build protobuf using autotools:
 compile FHIR-Buff:
 
     $ cd ~/
-    $ git clone https://github.com/CryptoDJ/fhir-buff.git
-    $ cd fhir-buff/src
+    $ git clone https://github.com/FHIRBUFF/fhirbuff-proto.git
+    $ cd fhirbuff-proto/src
     $ ./compile.sh
     
 The resulting C++, Objective C, C#, Java, and Python code is saved in src/bin.  
