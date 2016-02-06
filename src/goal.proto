@@ -1,0 +1,30 @@
+// Copyright (c) 2015-2016 FHIR-Buff Developers
+// Distributed under the MIT software license, see the accompanying
+// file COPYING or http://www.opensource.org/licenses/mit-license.php.
+
+syntax = "proto3";
+
+package fhirbuffs;
+
+import "primitives.proto";
+
+message Goal {
+	repeated Identifier identifier = 1; //[{ Identifier }], // External Ids for this goal
+	Reference subject = 2; // { Reference(Patient|Group|Organization) }, // Who this goal is intended for
+	Date startDate = 3; //"<date>"
+	CodeableConcept startCodeableConcept = 4; //{ CodeableConcept }
+	// target[x]: Reach goal on or before. One of these 2:
+	Date targetDate = 4; //"<date>"
+	Quantity targetQuantity = 5; //{ Quantity(Duration) },
+	repeated CodeableConcept category = 6; //[{ CodeableConcept }], // E.g. Treatment, dietary, behavioral, etc.
+	String description = 7; //"<string>", // R!  What's the desired outcome?
+	Code status = 8; // R!  proposed | planned | accepted | rejected | in-progress | achieved | sustaining | on-hold | cancelled
+	Date statusDate = 9; //"<date>", // When goal status took effect
+	CodeableConcept statusReason = 10; //{ CodeableConcept }, // Reason for current status
+	Reference author = 11; //{ Reference(Patient|Practitioner|RelatedPerson) }, // Who's responsible for creating Goal?
+	CodeableConcept priority = 12; //{ CodeableConcept }, // high | medium |low
+	repeated Reference addresses = 13; //[{ Reference(Condition|Observation|MedicationStatement|NutritionOrder|ProcedureRequest|RiskAssessment) }], // Issues addressed by this goal
+	repeated Annotation note = 14; //[{ Annotation }], // Comments about the goal
+	repeated CodeableConcept outcome = 15;//outcome" : [{ // What was end result of goal? // result[x]: Code or observation that resulted from goal. One of these 2:"resultCodeableConcept" : { CodeableConcept } "resultReference" : { Reference(Observation) }
+}
+
