@@ -7,6 +7,7 @@ syntax = "proto3";
 package fhirbuffs;
 
 import "primitives.proto";
+import "annotation.proto";
 
 message Goal {
 	repeated Identifier identifier = 1; //[{ Identifier }], // External Ids for this goal
@@ -14,17 +15,28 @@ message Goal {
 	Date startDate = 3; //"<date>"
 	CodeableConcept startCodeableConcept = 4; //{ CodeableConcept }
 	// target[x]: Reach goal on or before. One of these 2:
-	Date targetDate = 4; //"<date>"
-	Quantity targetQuantity = 5; //{ Quantity(Duration) },
-	repeated CodeableConcept category = 6; //[{ CodeableConcept }], // E.g. Treatment, dietary, behavioral, etc.
-	String description = 7; //"<string>", // R!  What's the desired outcome?
-	Code status = 8; // R!  proposed | planned | accepted | rejected | in-progress | achieved | sustaining | on-hold | cancelled
-	Date statusDate = 9; //"<date>", // When goal status took effect
-	CodeableConcept statusReason = 10; //{ CodeableConcept }, // Reason for current status
-	Reference author = 11; //{ Reference(Patient|Practitioner|RelatedPerson) }, // Who's responsible for creating Goal?
-	CodeableConcept priority = 12; //{ CodeableConcept }, // high | medium |low
-	repeated Reference addresses = 13; //[{ Reference(Condition|Observation|MedicationStatement|NutritionOrder|ProcedureRequest|RiskAssessment) }], // Issues addressed by this goal
-	repeated Annotation note = 14; //[{ Annotation }], // Comments about the goal
-	repeated CodeableConcept outcome = 15;//outcome" : [{ // What was end result of goal? // result[x]: Code or observation that resulted from goal. One of these 2:"resultCodeableConcept" : { CodeableConcept } "resultReference" : { Reference(Observation) }
+	Date targetDate = 5; //"<date>"
+	Quantity targetQuantity = 6; //{ Quantity(Duration) },
+	repeated CodeableConcept category = 7; //[{ CodeableConcept }], // E.g. Treatment, dietary, behavioral, etc.
+	string description = 8; //"<string>", // R!  What's the desired outcome?
+	GoalCode status = 9; // R!  proposed | planned | accepted | rejected | in-progress | achieved | sustaining | on-hold | cancelled
+	Date statusDate = 10; //"<date>", // When goal status took effect
+	CodeableConcept statusReason = 11; //{ CodeableConcept }, // Reason for current status
+	Reference author = 12; //{ Reference(Patient|Practitioner|RelatedPerson) }, // Who's responsible for creating Goal?
+	CodeableConcept priority = 13; //{ CodeableConcept }, // high | medium |low
+	repeated Reference addresses = 14; //[{ Reference(Condition|Observation|MedicationStatement|NutritionOrder|ProcedureRequest|RiskAssessment) }], // Issues addressed by this goal
+	repeated Annotation note = 15; //[{ Annotation }], // Comments about the goal
+	repeated CodeableConcept outcomeResult = 16;//outcome" : [{ // What was end result of goal? // result[x]: Code or observation that resulted from goal. One of these 2:"resultCodeableConcept" : { CodeableConcept } "resultReference" : { Reference(Observation) }
+	enum GoalCode {
+		proposed = 0;
+		planned = 1;
+		accepted = 2;
+		rejected = 3;
+		inProgress = 4;
+		achieved = 5;
+		sustaining = 6;
+		onHold = 7;
+		cancelled = 8;
+	}
 }
 

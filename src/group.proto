@@ -9,22 +9,13 @@ package fhirbuffs;
 import "primitives.proto";
 
 enum GroupType {
-	Person = 0;
-	Animal = 1;
-	Practitioner = 2;
-	Device = 3;
-	Medication = 4;
-	Substance = 5;
+	person = 0;
+	animal = 1;
+	practitioner = 2;
+	device = 3;
+	medication = 4;
+	substance = 5;
 }
-
-enum Entity {
-	Patient = 0;
-	Practitioner = 1;
-	Device = 2;
-	Medication = 3;
-	Substance = 4;
-}
-
 
 message Characteristic {
 	CodeableConcept code = 1; //{ CodeableConcept }, // R!  Kind of characteristic
@@ -37,7 +28,7 @@ message Characteristic {
 } 
 
 message Member {
-	string entity = 1; //{ Reference(Patient|Practitioner|Device|Medication|Substance) }, // R!  Reference to the group member
+	Reference entity = 1; //{ Reference(Patient|Practitioner|Device|Medication|Substance) }, // R!  Reference to the group member
 	Period period = 2; //{ Period } Period member belonged to the group
 	bool inactive = 3; // <boolean> If member is no longer in group
 } 

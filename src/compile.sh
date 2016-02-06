@@ -14,6 +14,8 @@ protoc -I=. --cpp_out=bin/. ./practitioner.proto
 protoc -I=. --cpp_out=bin/. ./healthcareservice.proto
 protoc -I=. --cpp_out=bin/. ./group.proto
 protoc -I=. --cpp_out=bin/. ./contract.proto
+protoc -I=. --cpp_out=bin/. ./annotation.proto
+protoc -I=. --cpp_out=bin/. ./goal.proto
 
 #Compile for C#
 protoc -I=. --csharp_out=bin/. ./primitives.proto
@@ -24,6 +26,8 @@ protoc -I=. --csharp_out=bin/. ./practitioner.proto
 protoc -I=. --csharp_out=bin/. ./healthcareservice.proto
 protoc -I=. --csharp_out=bin/. ./group.proto
 protoc -I=. --csharp_out=bin/. ./contract.proto
+protoc -I=. --csharp_out=bin/. ./annotation.proto
+protoc -I=. --csharp_out=bin/. ./goal.proto
 
 #Compile for Objective C
 protoc -I=. --objc_out=bin/. ./primitives.proto
@@ -34,6 +38,8 @@ protoc -I=. --objc_out=bin/. ./practitioner.proto
 protoc -I=. --objc_out=bin/. ./healthcareservice.proto
 protoc -I=. --objc_out=bin/. ./group.proto
 protoc -I=. --objc_out=bin/. ./contract.proto
+protoc -I=. --objc_out=bin/. ./annotation.proto
+protoc -I=. --objc_out=bin/. ./goal.proto
 
 #Compile for Java
 protoc -I=. --java_out=bin/. ./primitives.proto
@@ -44,6 +50,8 @@ protoc -I=. --java_out=bin/. ./practitioner.proto
 protoc -I=. --java_out=bin/. ./healthcareservice.proto
 protoc -I=. --java_out=bin/. ./group.proto
 protoc -I=. --java_out=bin/. ./contract.proto
+protoc -I=. --java_out=bin/. ./annotation.proto
+protoc -I=. --java_out=bin/. ./goal.proto
 
 #Compile for Python
 protoc -I=. --python_out=bin/. ./primitives.proto
@@ -54,3 +62,5 @@ protoc -I=. --python_out=bin/. ./practitioner.proto
 protoc -I=. --python_out=bin/. ./healthcareservice.proto
 protoc -I=. --python_out=bin/. ./group.proto
 protoc -I=. --python_out=bin/. ./contract.proto
+protoc -I=. --python_out=bin/. ./annotation.proto
+protoc -I=. --python_out=bin/. ./goal.proto

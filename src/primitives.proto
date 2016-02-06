@@ -17,10 +17,10 @@ message Decimal {
 }
 
 enum Gender {
-	Male = 0;
-	Female = 1;
-	Other = 2;
-	Unknown = 3;
+	male = 0;
+	female = 1;
+	other = 2;
+	unknown = 3;
 }
 
 message Position {
@@ -47,6 +47,8 @@ message Period {
     Date end = 2; //<dateTime> using UNIX time
 }
 
+
+    
 message Address {
     AddressUses use = 1; //<code>
     AddressTypes type = 2; //<code>
@@ -58,18 +60,19 @@ message Address {
     string postalCode = 8; //<string> Postal code for area
     string country = 9; //<string> Country (can be ISO 3166 3 letter code)
     Period period = 10; //<Period> Time period when address was/is in use
-    
-    enum AddressUses {
-		Home = 0;
-		Work = 1;
-		Temp = 2;
-		Old = 3;
-    }
-    enum AddressTypes {
-		Postal = 0;
-		Physical = 1;
-		Both = 2;
-    }
+
+	enum AddressUses {
+		home = 0;
+		work = 1;
+		temp = 2;
+		old = 3;
+	}
+
+	enum AddressTypes {
+		postal = 0;
+		physical = 1;
+		both = 2;
+	}  
 }
 
 message HumanName {
@@ -80,16 +83,16 @@ message HumanName {
     repeated string prefix = 5; //["<string>"] Parts that come before the name
     repeated string suffix = 6; //["<string>"] Parts that come after the name
     Period period = 7; //{ Period } Time period when name was/is in use
-    
-    enum HumanNameUses {
-		Usual = 0;
-		Official = 1;
-		Temp = 2;
-		Nickname = 3;
-		Anonymous = 4;
-		Old = 5;
-		Maiden = 6;
-    }
+}
+
+enum HumanNameUses {
+		usual = 0;
+		official = 1;
+		temp = 2;
+		nickname = 3;
+		anonymous = 4;
+		old = 5;
+		maiden = 6;
 }
 
 message ContactPoint {
@@ -156,17 +159,17 @@ message Link {
     LinkAssurance assurance = 2; //<code> level1 | level2 | level3 | level4
     
     enum LinkTarget {
-		Patient = 0;
-		Practitioner = 1;
-		RelatedPerson = 2;
-		Person = 3;
+		patient = 0;
+		practitioner = 1;
+		relatedPerson = 2;
+		person = 3;
     }
     enum LinkAssurance {
-		Unknown = 0;
-		Level1 = 1;
-		Level2 = 2;
-		Level3 = 3;
-		Level4 = 4;
+		unknown = 0;
+		level1 = 1;
+		level2 = 2;
+		level3 = 3;
+		level4 = 4;
     }
 }
 
@@ -200,13 +203,13 @@ message ServiceType {
 }
 
 enum Days {
-	Sunday = 0;
-	Monday = 1;
-	Tuesday = 2;
-	Wednesday = 3;
-	Thursday = 4;
-	Friday = 5;
-	Saturday = 6;
+	sunday = 0;
+	monday = 1;
+	tuesday = 2;
+	wednesday = 3;
+	thursday = 4;
+	friday = 5;
+	saturday = 6;
 }
 
 message AvailableTime {
@@ -214,6 +217,7 @@ message AvailableTime {
 	bool allDay = 2; // <boolean>, // Always available? e.g. 24 hour service
 	uint32 availableStartTime = 3; //"<time>", // Opening time of day (ignored if allDay = true)
 	uint32 availableEndTime = 4; //"<time>" // Closing time of day (ignored if allDay = true)
+	
 }
 
 message NotAvailableTime {

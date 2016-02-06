@@ -1,0 +1,18 @@
+// Copyright (c) 2015-2016 FHIR-Buff Developers
+// Distributed under the MIT software license, see the accompanying
+// file COPYING or http://www.opensource.org/licenses/mit-license.php.
+
+syntax = "proto3";
+
+package fhirbuffs;
+
+import "primitives.proto";
+
+message Annotation {
+	Reference authorReference = 1; //{ Reference(Practitioner|Patient|RelatedPerson) },
+	string authorString = 2; // "<string>",
+	Date time = 3; //"<dateTime>", // When the annotation was made
+	string text = 4; //"<string>" // R!  The annotation  - text content
+}
+
+
