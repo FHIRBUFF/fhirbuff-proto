@@ -7,7 +7,8 @@ syntax = "proto3";
 package fhirbuffs;
 
 message Date {
-  fixed32 value = 1; // date value
+    // use unix timestamp:  http://www.unixtimestamp.com/
+    fixed32 value = 1; // date value 
 }
 
 message Decimal {
