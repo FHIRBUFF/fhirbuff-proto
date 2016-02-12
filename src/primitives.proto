@@ -47,9 +47,7 @@ message Period {
     Date start = 1; //<dateTime> using UNIX time
     Date end = 2; //<dateTime> using UNIX time
 }
-
-
-    
+ 
 message Address {
     AddressUses use = 1; //<code>
     AddressTypes type = 2; //<code>
