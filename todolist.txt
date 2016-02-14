@@ -9,10 +9,11 @@ Identification.Groups.Group
 Identification.Individuals.Person
 Identification.Individuals.Practitioner
 Identification.Entities.Contract
+Identification.Individuals.Patient
+Clinical.CareProvision.Goal
 ////////////////////////////////////////////////
 ///Identification
 ////////////////////////////////////////////////
-Identification.Individuals.Patient
 Identification.Individuals.RelatedPerson
 Identification.Devices.Device
 Identification.Devices.DeviceComponent
@@ -28,7 +29,6 @@ Clinical.General.FamilyMemberHistory
 Clinical.General.RiskAssessment
 Clinical.General.DetectedIssue
 Clinical.CareProvision.CarePlan
-Clinical.CareProvision.Goal
 Clinical.CareProvision.ReferralRequest
 Clinical.CareProvision.ProcedureRequest
 Clinical.CareProvision.NutritionOrder
