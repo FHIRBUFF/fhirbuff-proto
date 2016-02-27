@@ -1,3 +1,6 @@
+Copyright (c) 2015-2016 FHIR-Buff Developers
+Distributed under the MIT software license, see the accompanying
+file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 ## Issue List
 
