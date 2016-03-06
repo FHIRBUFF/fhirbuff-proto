@@ -9,4 +9,4 @@
   
 * should reference use message or just an id that points to it??? or https://www.hl7.org/fhir/references.html#Reference  
   
-  
+* elements that take the form elementname[x] imply a choice of types (not value, type). Don't think that enum will work here as they are values. Maybe declare resource "Resource_elementname" with the two types. See patient.proto. 

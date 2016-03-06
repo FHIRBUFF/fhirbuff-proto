@@ -1,19 +1,36 @@
 // Copyright (c) 2015 FHIR-Buff Developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
+//mark 20160219- reworked below. several minor changes, but major change is addition of "Reference" data type. Where "Organization" was used for Reference(Organization), this has been replaced with
+//"Reference" as these are simply URL's to external organizations and not descriptors of the org where the "Organization" type would be appropriate.
+//This file should represent all FHIR data types as defined here http://hl7.org/fhir/datatypes.html#Coding with the exception of very basic types such as string
+//need to address: 
+//1.Communication. communication was defined in primitives to handle Patient.communication. However, there is a distincet Communication resource which is not related. Should I change the below to PatientCommunication or add communication message to patient proto? what does this do
+//answer: Communication is a resource. Patient_Communication is now declared in patient.proto file and communication is own resource
+//2. Why is decimal defined as below. Isn't this a primitive FHIR data type that can be called similar to string or bool and needs no def for this purpose?? 
+//answer: !!!Think we should use float
+//3. Should date below be fixed32 int? spec "A date, or partial date (e.g. just year or year + month) as used in human communication. There is no time zone. Dates SHALL be valid dates" Couldn't this be 3/11/2015 or Mar 11 2015, or are we planning on converting all to ISO dates? If so, how do we handle converting data coming in, and then returning in same format?
+//answer: yes. we will convert all incoming dates to ISO dates for storage. Not sure if ISO is considered "a date as used in human communication", so may need to convert on way out.
+//4. verify that enums do not need to be nested. Makes sense
+//5. why are enums zero based and messages 1? - protobuff spec
+
+
+//6. Moving all resources to unique protofile.
 
 syntax = "proto3";
 
 package fhirbuffs;
 
-message Date {
-  fixed32 value = 1; // date value
-}
 
+message Date {
+  fixed32 value = 1; // iso date value
+}
+//Changing to float
 message Decimal {
-  uint64 low = 1; // the first 64 bits of the underlying value
-  uint32 high = 2; // the last 32 bis of the underlying value
-  sint32 signScale = 3; // the number of decimal digits, and the sign
+    	double decimal = 1;//decimal is FHIR type but not ProtoBuff. Float is native to PB
+  //uint64 low = 1; // the first 64 bits of the underlying value
+  //uint32 high = 2; // the last 32 bis of the underlying value
+  //sint32 signScale = 3; // the number of decimal digits, and the sign
 }
 
 enum Gender {
@@ -30,7 +47,7 @@ message Position {
 }
 
 message Coding {
-    string system = 1; //<uri> string that uses regex.  
+    URI system = 1; //<uri> string that uses regex. The identification of the code system that defines the meaning of the symbol in the code  
     string version = 2; //<string>
     string code = 3; //<code> string that uses regex.  
     string display = 4; //<string>
@@ -58,7 +75,7 @@ message Address {
     string postalCode = 8; //<string> Postal code for area
     string country = 9; //<string> Country (can be ISO 3166 3 letter code)
     Period period = 10; //<Period> Time period when address was/is in use
-    
+    A date, or partial date (e.g. just year or year + month) as used in human communication. There is no time zone. Dates SHALL be valid dates
     enum AddressUses {
 		home = 0;
 		work = 1;
@@ -75,7 +92,7 @@ message Address {
 message HumanName {
     HumanNameUses use = 1; //"<code>", // usual | official | temp | nickname | anonymous | old | maiden
     string text = 2; //"<string>"  Text representation of the full name
-    repeated string family = 3; //["<string>"] Family name (often called 'Surname')
+    repeated string family = 3; //["<string>"] Family name (often called 'Surname')A date, or partial date (e.g. just year or year + month) as used in human communication. There is no time zone. Dates SHALL be valid dates
     repeated string given = 4; //["<string>"] Given names (not always 'first'). Includes middle names
     repeated string prefix = 5; //["<string>"] Parts that come before the name
     repeated string suffix = 6; //["<string>"] Parts that come after the name
@@ -91,34 +108,59 @@ message HumanName {
 		maiden = 6;
     }
 }
-
+//mschr1 20160202 not sure where below came from. Rewriting from datatype https://www.hl7.org/fhir/datatypes.html
+//message ContactPoint {
+    //AuthorReferences authorReference = 1; //{ Reference(Practitioner|Patient|RelatedPerson) },
+    //string authorString = 2; //<string>
+    //Date time = 3; //<dateTime> When the annotation was made
+    //string text = 4; //<string> R!  The annotation  - text content
+    //enum AuthorReferences {
+		//Practitioner = 0;
+		//Patient = 1;
+		//RelatedPerson = 2;
+		//Other = 3;
+	//}
+//}
 message ContactPoint {
-    AuthorReferences authorReference = 1; //{ Reference(Practitioner|Patient|RelatedPerson) },
-    string authorString = 2; //<string>
-    Date time = 3; //<dateTime> When the annotation was made
-    string text = 4; //<string> R!  The annotation  - text content
-    enum AuthorReferences {
-		Practitioner = 0;
-		Patient = 1;
-		RelatedPerson = 2;
-		Other = 3;
+	ContactPointSystems system = 1;//0..1 phone | fax | email | pager | other
+ 	string value = 2;//0..1 The actual contact point details 
+ 	ContactPointUses use = 3; //0..1 home | work | temp | old | mobile - purpose of this contact point
+        uint32 rank = 4; //0..1 Specify preferred order of use (1 = highest) -->
+ 	Period period = 5;//0..1 Period Time period when the contact point was/is in use 
+	enum ContactPointSystems{
+		phone = 0;
+		fax = 1;
+		email = 2;
+		pager = 3;
+		other = 4;
+	}
+	enum ContactPointUses {
+		home = 0;
+		work = 1;
+		temp = 2;
+		old = 3;
+		mobile = 4;
 	}
 }
 
-message Contact {
+message Contact { 
     CodeableConcept purpose = 1; //{ CodeableConcept }  The type of contact
     HumanName name = 2; //{ HumanName } A name associated with the contact
     repeated ContactPoint telecom = 3; //[{ ContactPoint }] Contact details (telephone, email, etc.)  for a contact
     Address address = 4; //{ Address } Visiting or postal addresses for the contact
+    repeated CodeableConcept relationship = 5;//The kind of relationship
+    Gender gender = 6;// male | female | other | unknown
+    Reference organization = 7;//{Reference(Organization)} that is associated with the contact. Relative, internal or absolute URL reference 
+    Period period = 8; //{ Period } Time period when name was/is in use
 }
 
 message Identifier {
 	IdentifierUses use = 1; //<code> usual | official | temp | secondary (If known)
-	repeated CodeableConcept type = 2;// { CodeableConcept } Description of identifier
-	string system = 3; //<uri> The namespace for the identifier
+	CodeableConcept type = 2;// { CodeableConcept } Description of identifier
+	URI system = 3; //<uri> The namespace for the identifier
 	string value = 4; //<string> The value that is unique
 	Period period = 5; //{ Period } Time period when id is/was valid for use
-	repeated Organization assigner = 6; //{ Reference(Organization) }  Organization that issued id (may be just text
+	Reference assigner = 6; //{ Reference(Organization) }  Organization that issued id (may be just text
 	enum IdentifierUses {
 		Usual = 0;
 		Official = 1;
@@ -129,22 +171,23 @@ message Identifier {
 	}
 }
 
-message Organization {
-    repeated Identifier identifier = 1; //[{ Identifier }]
-    bool active = 2; //<boolean>
-    CodeableConcept type = 3; //{ CodeableConcept }
-    string name = 4; //<string>
-    repeated ContactPoint telecom = 5; //[{ ContactPoint }]
-    repeated Address address = 6; //[{ Address }]
-    Organization partOf = 7; //: { Reference(Organization) } The organization of which this organization forms a part
-    repeated Contact contact  = 8; //: [{  Contact for the organization for a certain purpose
-}
+//moved below to own proto file as this is a resource
+//message Organization {
+//    repeated Identifier identifier = 1; //[{ Identifier }]
+//    bool active = 2; //<boolean>
+//    CodeableConcept type = 3; //{ CodeableConcept }
+//    string name = 4; //<string>
+//    repeated ContactPoint telecom = 5; //[{ ContactPoint }]
+//    repeated Address address = 6; //[{ Address }]
+ //   Reference partOf = 7; //: { Reference(Organization) } The organization of which this organization forms a part
+//    repeated Contact contact  = 8; //: [{  Contact for the organization for a certain purpose
+//}
 
 message Attachment {
     string contentType = 1; //<code> Mime type of the content, with charset etc. 
     string language = 2; //<code> Human language of the content (BCP-47) 
     bytes data = 3; //<base64Binary> Data inline, base64ed
-    string url = 4; //<uri> Uri where the data can be found
+    URL url = 4; //<uri> Uri where the data can be found
     uint32 size = 5; //<unsignedInt> Number of bytes of content (if url provided)
     bytes hash = 6; //<base64Binary> Hash of the data (sha-1, base64ed)
     string title = 7; //<string> Label to display in place of the data
@@ -154,6 +197,8 @@ message Attachment {
 message Link {
     LinkTarget target = 1; //Reference(Patient|Practitioner|RelatedPerson|Person) }, R!  The resource to which this actual person is associated
     LinkAssurance assurance = 2; //<code> level1 | level2 | level3 | level4
+    Reference other = 3;//Reference(Patient) The other patient resource that the link refers to
+    LinkType type = 4;//<!-- 1..1 replace | refer | seealso - type of link -->
     
     enum LinkTarget {
 	Patient = 0;
@@ -168,13 +213,18 @@ message Link {
 	Level3 = 3;
 	Level4 = 4;
     }
+    enum LinkType {
+	replace = 0;
+	refer = 1;
+	seealso = 2;	
+    }
 }
 
 message Quantity {
 	Decimal value = 1; // <decimal> Numerical value (with implicit precision)
 	string comparator = 2; //<code> < | <= | >= | > - how to understand the value
 	string unit = 3; //<string> Unit representation
-	string system = 4; // <uri>" System that defines coded unit form
+	URI system = 4; // <uri>" System that defines coded unit form
 	string code = 5; // <code> Coded form of the unit 
 }
 
@@ -199,6 +249,7 @@ message ServiceType {
 	CodeableConcept specialty = 2; // [{ CodeableConcept }] // Specialties handled by the Service Site
 }
 
+
 enum Days {
 	Sunday = 0;
 	Monday = 1;
@@ -209,6 +260,15 @@ enum Days {
 	Saturday = 6;
 }
 
+enum TimeUnits {
+	s = 0;//second
+	min = 1;//minute
+	h = 2;//hour
+	d = 3;//day
+	wk = 4;//week
+	mo = 5;//month
+	a = 6;//annual
+}
 message AvailableTime {
 	Days daysOfWeek = 1; //["<code>"], // mon | tue | wed | thu | fri | sat | sun
 	bool allDay = 2; // <boolean>, // Always available? e.g. 24 hour service
@@ -227,5 +287,97 @@ message Qualifications {
 	repeated Identifier identifier = 1; //[{ Identifier }], // An identifier for this qualification for the practitioner
 	CodeableConcept code = 2; //{ CodeableConcept }, // R!  Coded representation of the qualification
 	Period period = 3; //{ Period }, // Period during which the qualification is valid
-	Organization issuer = 4; //{ Reference(Organization) } // Organization that regulates and issues the qualification
+	Reference issuer = 4; //{ Reference(Organization) } // Organization that regulates and issues the qualification
+}
+message URI {
+	string uri = 1;//uri
+}
+message URL{
+	URI url = 1; //URL to FHIR resource
+}
+
+message Reference {
+	URL reference = 1; //reference to internal or external FHIR resource. Relative, internal or absolute URL reference
+	string display = 2;//text alternative for the resource 
+}
+
+message Animal {
+	CodeableConcept species = 1;//CodeableConcept E.g. Dog, Cow --></species>
+	CodeableConcept breed = 2;//CodeableConcept E.g. Poodle, Angus 
+	CodeableConcept genderStatus = 3;//CodeableConcept E.g. Neutered, Intact
+}
+
+// moved this off to patient_communctionat to avoid global conflict with the Communication resource
+//message Communication { //Languages which may be used to communicate
+//	CodeableConcept language = 1;//The ISO-639-1 alpha 2 code in lower case for the language, optionally followed by a hyphen and the ISO-3166-1 alpha 2 code for the region in upper case; e.g. "en" for English, or "en-US" for American English versus "en-EN" for England English.
+//        bool preferred = 2;///ndicates whether or not the patient prefers this language (over other languages he masters up a certain level).
+//}
+
+message SampledData {//Data that comes from a series of measurements taken by a device, with upper and lower limits
+	Quantity origin = 1;//Quantity(SimpleQuantity) Zero value and units
+	Decimal period = 2; //The length of time between sampling times, measured in milliseconds.
+	Decimal factor = 3;//A correction factor that is applied to the sampled data points before they are added to the origin.
+	Decimal lowerLimit = 4;//0..1 Lower limit of detection
+	Decimal upperLimit = 5;//..1 Upper limit of detection 
+	uint32 dimensions = 6;//1..1 Number of sample points at each time point
+        string data = 7;//Decimal values with spaces, or "E" | "U" | "L"
+}
+
+message DateTime{
+	Date datetime = 1;//A date, date-time or partial date (e.g. just year or year + month) as used in human communication. If hours and minutes are specified, a time zone SHALL be populated. Seconds must be provided due to schema type constraints but may be zero-filled and may be ignored. Dates SHALL be valid dates. The time "24:00" is not allowed
+	string timezone = 2;// If hours and minutes are specified, a time zone SHALL be populated
+}
+message Timing {
+	repeated DateTime event = 1;// 0..* When the event occurs
+ 	Repeat repeat = 2;//0..1 When the event is to occur
+ 	CodeableConcept code = 3;// 0..1 CodeableConcept QD | QOD | Q4H | Q6H | BID | TID | QID | AM | PM
+}
+
+message Repeat {//When the event is to occur	
+  	Quantity bounds = 1;//0..1 Quantity(Duration)|Range|Period Length/Range of lengths, or (Start and/or end) limits 
+  	uint32 count = 2;// 0..1 Number of times to repeat 
+  	Decimal duration = 3;// 0..1 How long when it happens
+  	Decimal durationMax = 4;//0..1 How long when it happens (Max) 
+  	TimeUnits durationUnits = 5;//0..1 s | min | h | d | wk | mo | a - unit of time (UCUM)
+  	uint32 frequency = 6;// 0..1 Event occurs frequency times per period
+  	uint32 frequencyMax = 7;// 0..1 Event occurs up to frequencyMax times per period
+  	Decimal period = 8;//0..1 Event occurs frequency times per period
+  	Decimal periodMax = 9;//0..1 Upper limit of period (3-4 hours) 
+  	TimeUnits periodUnits = 10;//0..1 s | min | h | d | wk | mo | a - unit of time (UCUM)
+  	RegularLifeEvents when = 11;//0..1 Regular life events the event is tied to 
+
+	enum RegularLifeEvents{
+		HS = 0;//Description: Prior to beginning a regular period of extended sleep (this would exclude naps). 
+		WAKE = 1;//Description: Upon waking up from a regular period of sleep, in order to start regular activities
+		C = 2;//Description: meal (from lat. ante cibus)
+		CM = 3;//Description: breakfast (from lat. cibus matutinus)
+		CD = 4;//Description: lunch (from lat. cibus diurnus)
+		CV = 5;//Description: dinner (from lat. cibus vespertinus)
+		AC = 6;//before meal (from lat. ante cibus)
+		ACM = 7;//before breakfast (from lat. ante cibus matutinus)
+		ACD = 8;//before lunch (from lat. ante cibus diurnus)
+		ACV = 9;//before dinner (from lat. ante cibus vespertinus)
+		PC = 10;//after meal (from lat. post cibus)
+		PCM = 11;//after breakfast (from lat. post cibus matutinus)
+		PCD = 12;//after lunch (from lat. post cibus diurnus)
+		PCV = 13;//after dinner (from lat. post cibus vespertinus)
+		
+	}
+
+ }
+
+message Signature {
+	repeated Coding type = 1;//1..* Coding Indication of the rea<author[x]><!-- 0..1 Reference(Practitioner|Patient|RelatedPerson)|string Individual responsible for the annotation --></author[x]>
+ <time value="[dateTime]"/><!-- 0..1 When the annotation was made -->
+ <text value="[string]"/><!-- 1..1 The annotation  - text content -->son the entity signed the object(s)
+ 	string when = 2;// value="[instant]"/><!-- 1..1 When the signature was created ?? is this type correct. Instant is not clearly defined http://hl7.org/fhir/datatypes.html#instant
+ 	Reference who[x] = 3;//1..1 uri|Reference(Practitioner|RelatedPerson|Patient|Device| Organization) Who signed the signature
+ 	string contentType = 4;//1..1 The technical format of the signature?? is this type correct. link to description is link to an rfc http://www.rfc-editor.org/bcp/bcp13.txt
+ 	bytes blob  = 5;//1..1 The actual signature content (XML DigSig. JWT, picture, etc.) 
+}
+
+message Annotation {
+	Reference author[x] = 1;//0..1 Reference(Practitioner|Patient|RelatedPerson)|string Individual responsible for the annotation 
+ 	DateTime time = 2;//0..1 When the annotation was made
+ 	string text = 3;//1..1 The annotation  - text content
 }

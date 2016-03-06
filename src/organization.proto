@@ -1,0 +1,21 @@
+// Copyright (c) 2015 FHIR-Buff Developers
+// Distributed under the MIT software license, see the accompanying
+// file COPYING or http://www.opensource.org/licenses/mit-license.php.
+
+syntax = "proto3";
+
+package fhirbuffs;
+
+import "primitives.proto";
+
+message Organization {
+    repeated Identifier identifier = 1; //[{ Identifier }]
+    bool active = 2; //<boolean>
+    CodeableConcept type = 3; //{ CodeableConcept }
+    string name = 4; //<string>
+    repeated ContactPoint telecom = 5; //[{ ContactPoint }]
+    repeated Address address = 6; //[{ Address }]
+    Reference partOf = 7; //: { Reference(Organization) } The organization of which this organization forms a part
+    repeated Contact contact  = 8; //: [{  Contact for the organization for a certain purpose
+}
+

@@ -9,6 +9,7 @@ protoc -I=. --cpp_out=bin/. ./substance.proto
 protoc -I=. --cpp_out=bin/. ./practitioner.proto
 protoc -I=. --cpp_out=bin/. ./healthcareservice.proto
 protoc -I=. --cpp_out=bin/. ./group.proto
+protoc -I=. --cpp_out=bin/. ./patient.proto
 
 #Compile for C#
 protoc -I=. --csharp_out=bin/. ./primitives.proto

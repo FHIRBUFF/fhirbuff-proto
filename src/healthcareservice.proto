@@ -11,16 +11,16 @@ import "location.proto";
 
 message HealthcareService {
 	repeated Identifier identifier = 1; // [{ Identifier }], External identifiers for this item
-	Organization providedBy = 2; //{ Reference(Organization) }, // Organization that provides this service
+	Reference providedBy = 2; //{ Reference(Organization) }, // Organization that provides this service
 	CodeableConcept serviceCategory = 3; //{ CodeableConcept }, // Broad category of service being performed or delivered
 	repeated ServiceType serviceType = 4; //[{ // Specific service delivered or performed
-	Location location = 5; //{ Reference(Location) }, // R!  Location where service may be provided
+	Reference location = 5; //{ Reference(Location) }, // R!  Location where service may be provided
 	string serviceName = 6; //"<string>", // Description of service as presented to a consumer while searching
 	string comment = 7; //"<string>", // Additional description and/or any specific issues not covered elsewhere
 	string extraDetails = 8; // "<string>", // Extra details about the service that can't be placed in the other fields
 	Attachment photo = 9; //{ Attachment }, // Facilitates quick identification of the service
 	repeated ContactPoint telecom = 10; //[{ ContactPoint }], // Contacts related to the healthcare service
-	repeated Location coverageArea = 11; //[{ Reference(Location) }], // Location(s) service is inteded for/available to
+	repeated Reference coverageArea = 11; //[{ Reference(Location) }], // Location(s) service is inteded for/available to
 	repeated CodeableConcept serviceProvisionCode = 12; //[{ CodeableConcept }], // Conditions under which service is available/offered
 	CodeableConcept eligibility = 13; //{ CodeableConcept }, // Specific eligibility requirements required to use the service
 	string eligibilityNote = 14; // "<string>", // Describes the eligibility conditions for the service

@@ -1,0 +1,3 @@
+1. do we have an extension data type defined
+2. do we need to incorporate a json and xml generation layer? all pb's should be easily convertable???
+3. Are we handling bundles?

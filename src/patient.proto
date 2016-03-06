@@ -8,6 +8,17 @@ package fhirbuffs;
 
 import "primitives.proto";
 
+message Patient_Communication {//Languages which may be used to communicate	
+	CodeableConcept language = 1;//The ISO-639-1 alpha 2 code in lower case for the language,
+        bool preferred = 2;///ndicates whether or not the patient prefers this language (over other languages he masters up a certain level).
+}
+
+//review with Amir see issues.md
+message Patient_Deceased {//this is a type choice. One or the other of the below should be used.
+	bool deceasedBoolean = 1;//Indicates if the individual is deceased or not
+	DateTime deceasedDateTime = 2;//Indicates if the individual is deceased or not by being populated with time. Null should be treated as "alive"
+}
+
 message Patient {
 	repeated Identifier identifier = 1; //[{ Identifier }] A human identifier for this person
 	bool active = 2;//<boolean>, Whether this patient's record is in active use
@@ -15,14 +26,18 @@ message Patient {
 	repeated ContactPoint telecom = 4; //[{ ContactPoint }] A contact detail for the person
 	Gender gender = 5; //<code> male | female | other | unknown
 	fixed32 birthDate = 6; //<date> The date on which the person was born
-	bool deceasedBoolean = 7;//Indicates if the individual is deceased or not
-	Date deceasedDateTime = 8;//Indicates if the individual is deceased or not
-	repeated Address address = 9; //[{ Address }] One or more addresses for the person
-	CodeableConcept maritalStatus = 10;//Marital (civil) status of a patient
-	bool multipleBirthBoolean = 11;//Whether patient is part of a multiple birth
-	uint32 multipleBirthInteger = 12;//Whether patient is part of a multiple birth
-	repeated Attachment photo = 13; //{ Attachment } Image of the person
-	Organization managingOrganization = 8; //{ Reference(Organization) } The organization that is the custodian of the person record
-	bool active = 9; //<boolean>, // This person's record is in active use
-	Link link = 10; //[{ Link to a resource that concerns the same actual person
-}
+	Patient_Deceased deceased = 7;//Indicates if the individual is deceased or not	
+	repeated Address address = 8; //[{ Address }] One or more addresses for the person
+	CodeableConcept maritalStatus = 9;//Marital (civil) status of a patient
+	bool multipleBirthBoolean = 10;//Whether patient is part of a multiple birth
+	uint32 multipleBirthInteger = 11;//Whether patient is part of a multiple birth
+	repeated Attachment photo = 12; //{ Attachment } Image of the person
+	repeated Contact contact = 13; //A contact party (e.g. guardian, partner, friend) for the patient
+	Animal animal = 14; //This patient is known to be an animal (non-human)
+	repeated Patient_Communication communication = 15; // list of Languages which may be used to communicate with the patient about his or her health
+	repeated Reference careProvider = 16;// Reference(Organization|Practitioner) Patient's nominated primary care provider 
+	Reference managingOrganization = 17;//Reference(Organization) Organization that is the custodian of the patient record
+	repeated Link link = 18;//Link to another patient resource that concerns the same actual person
+} 
+
+
